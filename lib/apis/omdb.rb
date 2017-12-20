@@ -11,7 +11,7 @@ class APIS::Omdb
 		JSON.parse(Net::HTTP.get(URI("http://www.omdbapi.com/?apikey=ccf82bf3&i=#{id}")))
 	end
 
-
+	#returns hash of a film's metacritic, rotten tomatoes, and imdb scores.
 	def self.get_rate(film)
 		base = {}
 		
