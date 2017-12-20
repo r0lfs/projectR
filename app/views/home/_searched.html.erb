@@ -8,14 +8,17 @@
 		</ul>
 	</div>
 	<div class="card">
-			<%#= render partial: 'user_ratings/user_rating_form', locals: {movie: @result} %>
-
+		<% if !@user_rating.nil? %>
+			<p>Your Rating: <%= @user_rating.rating %></p>
+		<% else %>
+			<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings} %>
+		<% end %>
 	</div>
 	<ul>
 
-		<li>imdb: <%= @ratings[:imdb] %></li>
-		<li>rt: <%= @ratings[:rt] %></li>
-		<li>meta: <%= @ratings[:meta] %></li>
+		<li>imdb: <%= @ratings[:imdb].class %></li>
+		<li>rt: <%= @ratings[:rt].class %></li>
+		<li>meta: <%= @ratings[:meta].class %></li>
 	</ul>
 
 Your Rating:
