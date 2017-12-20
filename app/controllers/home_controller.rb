@@ -14,10 +14,10 @@ class HomeController < ApplicationController
   def search
   	title = params[:search]
   	@result = APIS::Omdb.new.get_by_title(title)
-  	puts "result class is #{@result}"
   	if @result['Response'] == 'True'
   		@ratings = APIS::Omdb.get_rate(@result)
+	  	@genres = @result['Genre'].split(',').map { |e| e.strip }
   	end
-  	# @genres = @result['Genre'].split(',').map { |e| e.strip }
+  	
   end
 end

@@ -9,6 +9,7 @@
 			</ul>
 		</div>
 		<div class="card">
+			<p>Projected Rating <%= UserRating.projected_rating(current_user, @ratings, @genres) %></p>
 			<% if !@user_rating.nil? %>
 				<p>Your Rating: <%= @user_rating.rating %></p>
 
