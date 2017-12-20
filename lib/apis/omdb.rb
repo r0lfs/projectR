@@ -4,7 +4,7 @@ require 'json'
 class APIS::Omdb
 
 	def get_by_title(title)
-		JSON.parse(Net::HTTP.get(URI("http://www.omdbapi.com/?apikey=ccf82bf3&t=#{title}&plot=full")))
+		JSON.parse(Net::HTTP.get(URI("http://www.omdbapi.com/?apikey=ccf82bf3&t=#{title}&plot=short")))
 	end
 
 	def get_by_ID(id)
@@ -13,16 +13,27 @@ class APIS::Omdb
 
 
 	def self.get_rate(film)
-		base = film['Ratings'].map do |rating|
-			if rating["Source"] == 'Internet Movie Database' && rating["Source"] != 'N/A'
-				{imdb: (rating["Value"].delete!"/10").to_f}
-			elsif rating["Source"] == 'Rotten Tomatoes' && rating["Source"] != 'N/A'
-				{rt: ((rating['Value'].delete!'%').to_f / 10)}
-			elsif rating["Source"] == 'Metacritic' && rating['Value'] != 'N/A'
-				{meta: ((rating["Value"].delete!'/100').to_f / 10)}
-			end
+		base = {}
+		
+		if !film['Ratings'].find {|x| x["Source"]=="Rotten Tomatoes"}.empty?
+			base.merge!({rt: (film['Ratings'].find {|x| x["Source"]=="Rotten Tomatoes"}["Value"].delete!'%').to_f/10})
+		else
+			base.merge!({rt: nil})
 		end
-		return base.reduce(&:merge)
+		
+		if film['Metascore'] != 'N/A'
+			base.merge!({meta: film['Metascore'].to_f/10})
+		else
+			base.merge!({meta: nil})
+		end
+
+		if film['imdbRating'] != 'N/A'
+			base.merge!({imdb: film['imdbRating'].to_f})
+		else
+			base.merge!({imdb: nil})
+		end
+
+		return base
 	end
 end
 

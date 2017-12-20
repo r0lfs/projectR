@@ -1,9 +1,22 @@
-<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', remote: true do |f| %>
-	<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
-	<%= f.hidden_field :genres, value: result['Genre'] %>
-	<%= f.hidden_field :imdb, value: ratings[:imdb] %>
-	<%= f.hidden_field :meta, value: ratings[:meta] %>
-	<%= f.hidden_field :rt, value: ratings[:rt] %>
-	<%= f.number_field :rating, only_integer: true %>
-	<%= f.submit %>
-<% end %>
+<% if @user_rating.nil? %>
+	<ul>
+		<li><%= ratings[:imdb] %></li>
+		<li><%= ratings[:meta] %></li>
+		<li><%= ratings[:rt] %></li>
+	</ul>
+	<div id="rating-form">
+		<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', remote: true do |f| %>
+			<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
+			<%= f.hidden_field :genres, value: result['Genre'] %>
+			<%= f.hidden_field :imdb, value: ratings[:imdb] %>
+			<%= f.hidden_field :meta, value: ratings[:meta] %>
+			<%= f.hidden_field :rt, value: ratings[:rt] %>
+			<%= f.number_field :rating, only_integer: true %>
+			<%= f.submit %>
+		<% end %>
+	</div>
+	<% else %>
+	<div id="rated_form">
+		<p>Your Rating: <%= user_rating.rating %></p>
+	</div>
+	<% end %>
