@@ -14,9 +14,9 @@
 				<p>Your Rating: <%= @user_rating.rating %></p>
 
 				<ul>
-					<li><%= @ratings[:imdb] %></li>
-					<li><%= @ratings[:meta] %></li>
-					<li><%= @ratings[:rt] %></li>
+					<li>IMDb: <%= @ratings[:imdb] %></li>
+					<li>Metacritic: <%= @ratings[:meta] %></li>
+					<li>Rotten Tomatoes: <%= @ratings[:rt] %></li>
 				</ul>
 			<% else %>
 				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings} %>
@@ -27,28 +27,5 @@
 		<p>There wasn't a result for <%= params[:search] %>. You can try searching with a different spelling, or search using the IMDB ID.</p>
 	</div>
 	<% end %>
-
-<%# if current_user.user_ratings.where(imdb_id: @result['imdbID']).exists? %>
-	<%#= UserRating.where(user_id: current_user.id, imdb_id: @result['imdbID']).rating %>
-<%# else %>
-
-<%# end %>
-<!-- <div class="rating">
-<span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
-</div>
-<form class="rating">
-    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-    <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-    <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half" for="star3half" title="Meh - 3.5 stars"></label>
-    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-    <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-    <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
-    
-    <button type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"><i class="fa fa-star" aria-hidden="true"></i></label>
-    <input type="radio" id="starhalf" name="rating" value="half" /><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
-</form><input type="radio" id="star1" name="rating" value="1" /> -->
-
 </div>
 

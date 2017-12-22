@@ -15,7 +15,7 @@ class APIS::Omdb
 	def self.get_rate(film)
 		base = {}
 		
-		if !film['Ratings'].find {|x| x["Source"]=="Rotten Tomatoes"}.empty?
+		if !film['Ratings'].find {|x| x["Source"]=="Rotten Tomatoes"}.nil?
 			base.merge!({rt: (film['Ratings'].find {|x| x["Source"]=="Rotten Tomatoes"}["Value"].delete!'%').to_f/10})
 		else
 			base.merge!({rt: nil})

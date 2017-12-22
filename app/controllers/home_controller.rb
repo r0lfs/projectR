@@ -12,8 +12,12 @@ class HomeController < ApplicationController
   end
 
   def search
-  	title = params[:search]
-  	@result = APIS::Omdb.new.get_by_title(title)
+  	if params[:search].downcase.starts_with?('tt') #checks if searching by imdb id
+ 			@result = APIS::Omdb.new.get_by_ID(params[:search]) 		
+  	else
+  		@result = APIS::Omdb.new.get_by_title(params[:search])
+  	end
+
   	if @result['Response'] == 'True'
   		@ratings = APIS::Omdb.get_rate(@result)
 	  	@genres = @result['Genre'].split(',').map { |e| e.strip }
