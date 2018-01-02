@@ -1,20 +1,23 @@
-<% if @user_rating.nil? %>
-	<div id="rating-form">
-		<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', remote: true do |f| %>
-			<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
-			<%= f.hidden_field :genres, value: result['Genre'] %>
-			<%= f.hidden_field :imdb, value: ratings[:imdb] %>
-			<%= f.hidden_field :meta, value: ratings[:meta] %>
-			<%= f.hidden_field :rt, value: ratings[:rt] %>
-			<% if projected.is_a?(Numeric) %>
-				<%= f.hidden_field :proj_dif, value: %>
-			<% end %>
-			<%= f.number_field :rating, only_integer: true %>
-			<%= f.submit %>
+<div id="rating-form">
+	<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', html: {multipart: true}, remote: true do |f| %>
+		<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
+		<%= f.hidden_field :genres, value: result['Genre'] %>
+		<%= f.hidden_field :imdb, value: ratings[:imdb] %>
+		<%= f.hidden_field :meta, value: ratings[:meta] %>
+		<%= f.hidden_field :rt, value: ratings[:rt] %>
+		<% if projected.is_a?(Numeric) %>
+			<%= f.hidden_field :proj, value: projected %>
 		<% end %>
-	</div>
-<% else %>
-	<div id="rated_form">
-		<p>Your Rating: <%= user_rating.rating %></p>
-	</div>
-<% end %>
+		<%= f.select :rating,
+	  	options_for_select([
+	  		["5 Stars", 10],
+	  		["4 Stars", 8],
+	  		["3 Stars", 6],
+	  		["2 Stars", 4],
+	  		["1 Star", 2]
+	  	]) 
+	  %>
+
+		<%= f.submit %>
+	<% end %>
+</div>

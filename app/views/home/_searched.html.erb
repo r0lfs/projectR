@@ -1,30 +1,37 @@
 <div class="col s4 offset-s3 search_result">
-	<% if @ratings %>
+	<% if @ratings %> 
 		<img src=<%= @result["Poster"] %> alt="">
 		<div class="info">
 			<ul>
-				<li class="projected"></li>
 				<b><li class="title"><%= @result["Title"] %></li></b>
 				<li class="plot"><%= @result["Plot"] %></li>
 			</ul>
 		</div>
-		<div class="card">
-			<p>Projected Rating <%= @projected %></p>
-			<% if !@user_rating.nil? %>
-				<p>Your Rating: <%= @user_rating.rating %></p>
+		<div class="fun">
+			<ul>
+				<li>imdb: <%= @ratings[:imdb] %></li>
+				<li>meta: <%= @ratings[:meta] %> </li>
+				<li>rt: <%= @ratings[:rt] %> </li>
+			</ul>
+				
+			<% if @user_rating.nil? %>
+				<% if @projected.is_a? Numeric %>
+					<p class='projected'>Projected Rating <%= (@projected/2).round(1) %>/5</p>
+				<% else %>
+					<p class="projected"><%= @projected %></p>
+				<% end %>
 
-				<ul>
-					<li>IMDb: <%= @ratings[:imdb] %></li>
-					<li>Metacritic: <%= @ratings[:meta] %></li>
-					<li>Rotten Tomatoes: <%= @ratings[:rt] %></li>
-				</ul>
+				<div class="rating-form">
+					<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
+				</div>
 			<% else %>
-				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
+				<p >Your Rating: <%= @user_rating.rating/2 %>/5</p>
 			<% end %>
+			<div class="rated"></div>
 		</div>
 	<% else %>
 	<div class="not-found">
-		<p>There wasn't a result for <%= params[:search] %>. You can try searching with a different spelling, or search using the IMDB ID.</p>
+		<p>There wasn't a result for <%= params[:search] %>. Are you sure you spelled it correctly? </p>
 	</div>
 	<% end %>
 </div>

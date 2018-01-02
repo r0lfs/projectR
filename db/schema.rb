@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223141440) do
+ActiveRecord::Schema.define(version: 20180102062438) do
 
   create_table "user_ratings", force: :cascade do |t|
     t.integer "user_id"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20171223141440) do
     t.integer "rating"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "dif_projected", default: 0.0
+    t.float "dif_projected"
     t.index ["user_id"], name: "index_user_ratings_on_user_id"
   end
 
