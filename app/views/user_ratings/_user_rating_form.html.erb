@@ -6,6 +6,9 @@
 			<%= f.hidden_field :imdb, value: ratings[:imdb] %>
 			<%= f.hidden_field :meta, value: ratings[:meta] %>
 			<%= f.hidden_field :rt, value: ratings[:rt] %>
+			<% if projected.is_a?(Numeric) %>
+				<%= f.hidden_field :proj_dif, value: %>
+			<% end %>
 			<%= f.number_field :rating, only_integer: true %>
 			<%= f.submit %>
 		<% end %>

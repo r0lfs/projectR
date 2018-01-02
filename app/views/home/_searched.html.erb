@@ -9,7 +9,7 @@
 			</ul>
 		</div>
 		<div class="card">
-			<p>Projected Rating <%= UserRating.projected_rating(current_user, @ratings, @genres) %></p>
+			<p>Projected Rating <%= @projected %></p>
 			<% if !@user_rating.nil? %>
 				<p>Your Rating: <%= @user_rating.rating %></p>
 
@@ -19,7 +19,7 @@
 					<li>Rotten Tomatoes: <%= @ratings[:rt] %></li>
 				</ul>
 			<% else %>
-				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings} %>
+				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
 			<% end %>
 		</div>
 	<% else %>
