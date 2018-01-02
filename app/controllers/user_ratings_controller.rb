@@ -8,6 +8,7 @@ class UserRatingsController < ApplicationController
 
   def create
   	rating = user_rating_params[:rating].to_i
+    
   	if user_rating_params[:imdb] != nil
   	 	imdb_dif = (rating - user_rating_params[:imdb].to_f)
   	else

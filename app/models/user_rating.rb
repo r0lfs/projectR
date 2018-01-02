@@ -1,4 +1,4 @@
-require 'descriptive_statistics'
+require 'descriptive_statistics' #so i can call built in mean and standard deviation methods
 
 class UserRating < ApplicationRecord
 	belongs_to :user
@@ -7,25 +7,23 @@ class UserRating < ApplicationRecord
 		count = 0
 		projected = 0
 
-		if !ratings[:imdb].nil? #checks to ensure that there is a imdb rating to compare
-			projected += (UserRating.imdb_proj(user, genres) + ratings[:imdb])
-			count += 1	
+		#the keys hash contains the keys to the 'ratings' argument, and the values are key's to  the genre_proj method which selects each sub differential from DB
+		keys = {imdb: :imdb_dif, meta: :meta_dif, rt: :rt_dif}
+
+		#iterates through each key value pair, and all the genres by calling the genre_proj method.
+		keys.each do |key, value|
+			puts ratings[key]
+			if !ratings[key].nil? #checks to ensure that there is a critic rating from which to compare before running genre_proj
+				projected += (UserRating.genre_proj(user, genres, value) + ratings[key])
+				count += 1	
+			end
 		end
 
-		if !ratings[:meta].nil?
-			projected += (UserRating.meta_proj(user, genres) + ratings[:meta])
-			count += 1
-		end
-
-		if !ratings[:rt].nil?
-		  projected += (UserRating.rt_proj(user, genres) + ratings[:rt])
-		  count += 1
-		end
 
 		if count > 0
 			rating = projected / count
-			if rating > 10
-				return 10.0
+			if rating >= 10
+				return 10.00
 			else
 				return rating.round(2)
 			end
@@ -35,35 +33,15 @@ class UserRating < ApplicationRecord
 	end
 
 	private
-	# i tried to keep this DRY, but I couldn't figure out how to pass in a symbol without it throwing an error
-	def self.imdb_proj(user, genres)
+	
+	def self.genre_proj(user, genres, key)
 		scores = genres.map do |genre|
-			user.user_ratings.where("genres LIKE ?", "%" +genre+ "%").last(10).pluck(:imdb_dif) #selects the last ten movies the user rated including the genre of searched film
-		end
-		scores.flatten! #flattens array to single dimension 
+			user.user_ratings.where("genres LIKE ?", "%" +genre+ "%").last(30).pluck(key) #selects up to the last thirty movies the user rated of each genre of searched film
+		end																																							
+		scores.flatten!.compact! #flattens array and removes any nil values
 		mean = scores.mean
 		std_dev = scores.standard_deviation
-		return (mean / std_dev) * mean #this is using the coefficent of variation to weight the score
-	end
-
-	def self.meta_proj(user, genres)
-		scores = genres.map do |genre|
-			user.user_ratings.where("genres LIKE ?", "%" +genre+ "%").last(10).pluck(:meta_dif)
-		end
-		scores.flatten!
-		mean = scores.mean
-		std_dev = scores.standard_deviation
-		return (mean / std_dev) * mean #this is using the coefficent of variation to weight the score
-		
-	end
-
-	def self.rt_proj(user, genres)
-		scores = genres.map do |genre|
-			user.user_ratings.where("genres LIKE ?", "%" +genre+ "%").last(10).pluck(:rt_dif)
-		end
-		scores.flatten!
-		mean = scores.mean
-		std_dev = scores.standard_deviation
-		return (mean / std_dev) * mean #this is using the coefficent of variation to weight the score
+		scores.map! { |e|  e if(mean.abs - e.abs).abs <=  std_dev }.compact! #removes data points that are outside the standard deviation to the mean, and removes nil elements
+		return scores.mean
 	end
 end

@@ -5,6 +5,7 @@ class HomeController < ApplicationController
   	end
   	if params[:search]
   		search
+      @projected = UserRating.projected_rating(current_user, @ratings, @genres) 
   		if @ratings
   			@user_rating = current_user.user_ratings.find_by(imdb_id: @result['imdbID'])
   		end
@@ -12,16 +13,12 @@ class HomeController < ApplicationController
   end
 
   def search
-  	if params[:search].downcase.starts_with?('tt') #checks if searching by imdb id
- 			@result = APIS::Omdb.new.get_by_ID(params[:search]) 		
-  	else
-  		@result = APIS::Omdb.new.get_by_title(params[:search])
-  	end
+ 		@result = APIS::Omdb.new.get_by_title(params[:search])
 
-  	if @result['Response'] == 'True'
-  		@ratings = APIS::Omdb.get_rate(@result)
-	  	@genres = @result['Genre'].split(',').map { |e| e.strip }
+  	if @result['Response'] == 'True' #only runs if film is found
+  		@ratings = APIS::Omdb.get_rate(@result) #gets the critic ratings for film
+	  	@genres = @result['Genre'].split(',').map { |e| e.strip } #changes string of genres to an array 
   	end
-  	
   end
+
 end
