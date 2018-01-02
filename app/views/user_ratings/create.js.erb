@@ -1,3 +1,4 @@
-$('#rating-form').hide();
-$('#rated_form').show();
-$('#rating').text(`Your Rating: ${@user_rating.rating}`);
+$('.rating-form').hide();
+$('.projected').hide();
+$('.rated').show();
+$('.rated').text("Your Rating: <%= @user_rating.rating/2 %>/5");

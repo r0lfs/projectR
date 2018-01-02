@@ -5,9 +5,9 @@ class HomeController < ApplicationController
   	end
   	if params[:search]
   		search
-      @projected = UserRating.projected_rating(current_user, @ratings, @genres) 
   		if @ratings
-  			@user_rating = current_user.user_ratings.find_by(imdb_id: @result['imdbID'])
+        @projected = UserRating.projected_rating(current_user, @ratings, @genres) #runs the projected rating function
+  			@user_rating = current_user.user_ratings.find_by(imdb_id: @result['imdbID']) #if the user has already rated the film, it will show the rating
   		end
   	end
   end
@@ -17,7 +17,7 @@ class HomeController < ApplicationController
 
   	if @result['Response'] == 'True' #only runs if film is found
   		@ratings = APIS::Omdb.get_rate(@result) #gets the critic ratings for film
-	  	@genres = @result['Genre'].split(',').map { |e| e.strip } #changes string of genres to an array 
+	  	@genres = @result['Genre'].split(',').map { |e| e.strip } #changes string of genres to an array so each genre can be searched individually 
   	end
   end
 
