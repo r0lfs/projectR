@@ -1,6 +1,7 @@
 <div id="rating-form">
 	<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', html: {multipart: true}, remote: true do |f| %>
 		<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
+		<%= f.hidden_field :user_id, value: current_user.id %>
 		<%= f.hidden_field :genres, value: result['Genre'] %>
 		<%= f.hidden_field :imdb, value: ratings[:imdb] %>
 		<%= f.hidden_field :meta, value: ratings[:meta] %>
