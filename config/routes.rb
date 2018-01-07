@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
 
   resources :user_ratings
-  
+  put '/next_film', to: 'home#next_film'
   root 'home#index'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

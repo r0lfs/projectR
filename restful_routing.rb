@@ -24,4 +24,5 @@ cancel_user_registration GET    /users/cancel(.:format)          users/registrat
                          PATCH  /user_ratings/:id(.:format)      user_ratings#update
                          PUT    /user_ratings/:id(.:format)      user_ratings#update
                          DELETE /user_ratings/:id(.:format)      user_ratings#destroy
+               next_film PUT    /next_film(.:format)             home#next_film
                     root GET    /                                home#index

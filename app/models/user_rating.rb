@@ -2,7 +2,6 @@ require 'descriptive_statistics'
 
 class UserRating < ApplicationRecord
 	belongs_to :user
-	# validates 
 
 	private
 
@@ -16,7 +15,7 @@ class UserRating < ApplicationRecord
 
 		#the keys hash contains the keys to the 'ratings' argument, and the values are key's to the genre_proj method which selects each sub differential from DB
 		keys = {imdb: :imdb_dif, meta: :meta_dif, rt: :rt_dif, proj: :dif_projected}
-
+		
 		#iterates through each key value pair, and all the genres by calling the genre_proj method.
 		keys.each do |key, value|
 			if !ratings[key].nil? && key != :proj #checks to ensure that there is a critic rating from which to compare before running genre_proj
@@ -84,7 +83,7 @@ class UserRating < ApplicationRecord
 		#basic required elements for UserRating record, plus defaults dif_projected to nil
 		gnu_hash = {user_id: params_hash[:user_id], imdb_id: params_hash[:imdb_id], genres: params_hash[:genres], dif_projected: nil}
 
-		critics = {imdb: :imdb_dif, meta: :meta_dif, rt: :rt_dif} #hash of keys with keys as values that allows their values to be set later
+		critics = {imdb: :imdb_dif, meta: :meta_dif, rt: :rt_dif} #hash of keys with keys as values that allows their values to be set later #meta
 
   	rating = params_hash[:rating].to_f #converts rating from form to float
   	gnu_hash.merge!(:rating => rating )
@@ -105,4 +104,132 @@ class UserRating < ApplicationRecord
     end
     return gnu_hash
 	end #ends create_params
+	
+	#gets the details of the film: the genres, the projected rating, and the user rating if it's already been rated
+	def self.get_film_details(film, current_user)
+		ratings = APIS::Omdb.get_rate(film) #gets the critic ratings for film
+	  genres = film['Genre'].split(',').map { |e| e.strip } #changes string of genres to an array so each genre can be searched individually 
+		user_rating = current_user.user_ratings.find_by(imdb_id: film['imdbID']) #if the user has already rated the film, it will show the rating 
+
+		if current_user.rate_count > 14 #runs once the user has rated 15 films to establish a baseline of tendencies 
+	  	projected = UserRating.projected_rating(current_user, ratings, genres) #runs the projected rating function
+	  else
+	  	projected = nil
+	  end
+	  return {ratings: ratings, genres: genres, user_rating: user_rating, projected: projected}
+	end #ends get_film_details
+
+
+	def self.set_rate(current_user)
+		already_rated = []
+		not_rated = []
+		UserRating.base_films.each do |film|
+			if current_user.user_ratings.where(imdb_id: film).exists?
+				already_rated<<film
+			else
+				not_rated<<film
+			end
+		end
+		puts "already rated is #{already_rated.length}, not rated is #{not_rated.length}"
+		return {already_rated: already_rated, not_rated: not_rated}
+	end #ends set_rate
+
+
+	def self.random_film_selection(already_rated, not_rated, user)
+		random = not_rated.sample
+		already_rated << random
+		not_rated.delete(random)
+
+		result = APIS::Omdb.new.get_by_ID(random)
+		return {already_rated: already_rated, not_rated: not_rated, result: result}
+	end
+
+	#list of popular films to establish a base rating from	
+	def self.base_films
+		[
+	  "tt0032138",
+	  "tt0033467",
+	  "tt5052448",
+	  "tt0041959",
+	  "tt1392190",
+	  "tt2096673",
+	  "tt0017136",
+	  "tt0068646",
+	  "tt0083866",
+	  "tt4975722",
+	  "tt0027977",
+	  "tt0034583",
+	  "tt1895587",
+	  "tt0054215",
+	  "tt0120382",
+	  "tt0053125",
+	  "tt5462602",
+	  "tt5013056",
+	  "tt0317248",
+	  "tt0029583",
+	  "tt1065073",
+	  "tt0033870",
+	  "tt0451279",
+	  "tt1454468",
+	  "tt2024544",
+	  "tt4925292",
+	  "tt0043014",
+	  "tt1020072",
+	  "tt0075314",
+	  "tt2948356",
+	  "tt0029843",
+	  "tt2488496",
+	  "tt3315342",
+	  "tt3397884",
+	  "tt1024648",
+	  "tt2543164",
+	  "tt0120363",
+	  "tt0435761",
+	  "tt0032904",
+	  "tt0047478",
+	  "tt0078748",
+	  "tt1049413",
+	  "tt3783958",
+	  "tt3890160",
+	  "tt0044081",
+	  "tt0020629",
+	  "tt2380307",
+	  "tt0470752",
+	  "tt0052311",
+	  "tt0056172",
+	  "tt3040964",
+	  "tt2582782",
+	  "tt4034228",
+	  "tt0052357",
+	  "tt0057012",
+	  "tt0468569",
+	  "tt0065571",
+	  "tt3501632",
+	  "tt0266543",
+	  "tt0063522",
+	  "tt1125849",
+	  "tt6640262",
+	  "tt0060196",
+	  "tt0060196",
+	  "tt0043265",
+	  "tt3450958",
+	  "tt5726616",
+	  "tt1232106",
+	  "tt0482571",
+	  "tt2250912",
+	  "tt2527336",
+	  "tt3235888",
+	  "tt0032910",
+	  "tt0047296",
+	  "tt0078788",
+	  "tt0091763",
+	  "tt0073195",
+	  "tt2911666",
+	  "tt1245492",
+	  "tt1631867",
+	  "tt0133093",
+	  "tt0067328",
+	  "tt1201607"
+		]
+	end
 end
