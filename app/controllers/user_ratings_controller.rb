@@ -21,6 +21,12 @@ class UserRatingsController < ApplicationController
   end
 
   def update
+    @user_rating = UserRating.find_by(:imdb_id)
+    rating_params = UserRating.create_params(user_rating_params)
+    @user_rating.update(rating_params)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def user_rating_params

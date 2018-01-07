@@ -1,0 +1,31 @@
+<div class="col s4 offset-s3 base-rate">
+		<img src=<%= @result["Poster"] %> alt="">
+		<div class="info">
+			<ul>
+				<b><li class="title"><%= @result["Title"] %></li></b>
+				<li class="plot"><%= @result["Plot"] %></li>
+			</ul>
+		</div>
+		<div class="fun">
+			<ul>
+				<li>imdb: <%= @ratings[:imdb] %></li>
+				<li>meta: <%= @ratings[:meta] %> </li>
+				<li>rt: <%= @ratings[:rt] %> </li>
+			</ul>
+			<% if current_user.rate_count > 19 %>	
+				<% if @projected.is_a? Numeric %>
+					<p class='projected'>Projected Rating <%= (@projected/2).round(1) %>/5.0</p>
+				<% else %>
+					<p class="projected"><%= @projected %></p>
+				<% end %>
+			<% else %>
+				<p class="projected"> You need to rate at least <%= 20 - current_user.rate_count %> more films until we can project a rating</p>
+			<% end %>
+			<div class="rating-form">
+				<p>the rating should be here</p>
+				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
+			</div>
+		</div>
+		<!-- <button id="next_film" data-git="<%#=  @already_rated %>">I Haven't Seen This Film </button> -->
+		<%= button_to "I Haven't Seen This Film", next_film_path(already_rated: @already_rated, not_rated: @not_rated), class: 'next_film',  method: :put, remote: true  %>
+</div>

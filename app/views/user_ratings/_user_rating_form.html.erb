@@ -1,4 +1,5 @@
 <div id="rating-form">
+	<p>fuck it!</p>
 	<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', html: {multipart: true}, remote: true do |f| %>
 		<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
 		<%= f.hidden_field :user_id, value: current_user.id %>

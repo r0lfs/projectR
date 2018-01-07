@@ -21,7 +21,7 @@
 
   	<nav>
   		<div class="nav-wrapper deep-purple darken-3 row">
-      	<a href="#" class="brand-logo"><i class="material-icons">movie_filter</i>Project Rating</a>
+      	<%= link_to "Project Rating", root_path, class: 'brand-logo' %>
         	<div class="input-field search-input col s6 offset-s3">
             <%= form_tag(root_path, method: 'get') do %>
             	<%= text_field_tag :search, params[:search], :id => 'search', type: 'search', placeholder: "Search by Title" %>

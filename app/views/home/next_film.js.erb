@@ -1,0 +1,6 @@
+$('.home_base').fadeOut();
+function nextFilm(){
+	$('.home_base').html("<%= j render(partial: 'base_rate') %>");
+}
+setTimeout(nextFilm, 350);
+$('.home_base').fadeIn();
