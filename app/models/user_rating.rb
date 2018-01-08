@@ -84,7 +84,7 @@ class UserRating < ApplicationRecord
 		gnu_hash = {user_id: params_hash[:user_id], imdb_id: params_hash[:imdb_id], genres: params_hash[:genres], dif_projected: nil}
 
 		critics = {imdb: :imdb_dif, meta: :meta_dif, rt: :rt_dif} #hash of keys with keys as values that allows their values to be set later #meta
-
+		puts
   	rating = params_hash[:rating].to_f #converts rating from form to float
   	gnu_hash.merge!(:rating => rating )
 
@@ -119,7 +119,8 @@ class UserRating < ApplicationRecord
 	  return {ratings: ratings, genres: genres, user_rating: user_rating, projected: projected}
 	end #ends get_film_details
 
-
+	#when user goes to home page, set_rate splits the hardcoded list of films (base_films) into two lists: already-rated, which is, as the name implies
+	#an array of films the user has already rated, and not-rated, which are films they have not.
 	def self.set_rate(current_user)
 		already_rated = []
 		not_rated = []
@@ -157,7 +158,6 @@ class UserRating < ApplicationRecord
 	  "tt0068646",
 	  "tt0083866",
 	  "tt4975722",
-	  "tt0027977",
 	  "tt0034583",
 	  "tt1895587",
 	  "tt0054215",
@@ -195,7 +195,6 @@ class UserRating < ApplicationRecord
 	  "tt0020629",
 	  "tt2380307",
 	  "tt0470752",
-	  "tt0052311",
 	  "tt0056172",
 	  "tt3040964",
 	  "tt2582782",

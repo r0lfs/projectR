@@ -16,7 +16,7 @@
 				
 			<% if @user_rating.nil? %>
 				<% if @projected.is_a? Numeric %>
-					<p class='projected'>Projected Rating <%= (@projected/2).round(1) %>/5</p>
+					<p class='projected'>Projected Rating <%= (@projected/2).round(1) %>/5.0</p>
 				<% else %>
 					<p class="projected"><%= @projected %></p>
 				<% end %>
@@ -26,6 +26,28 @@
 				</div>
 			<% else %>
 				<p >Your Rating: <%= @user_rating.rating/2 %>/5</p>
+				  <ul id="stars">
+			      <li id="star2">
+			        <i class="fa fa-star-o fa-3x" data-rating="2"></i>
+			        <i class="fa fa-star fa-3x" data-rating="2" ></i>
+			      </li>
+			      <li id="star4">
+			        <i class="fa fa-star-o fa-3x" data-rating="4"></i>
+			        <i class="fa fa-star fa-3x" data-rating="4" ></i>
+			      </li>
+			      <li id="star6">
+			        <i class="fa fa-star-o fa-3x" data-rating="6"></i>
+			        <i class="fa fa-star fa-3x" data-rating="6" ></i>
+			      </li>
+			      <li id="star8">
+			        <i class="fa fa-star-o fa-3x" data-rating="8"></i>
+			        <i class="fa fa-star fa-3x" data-rating="8" ></i>
+			      </li>
+			      <li id="star10">
+			        <i class="fa fa-star-o fa-3x" data-rating="10"></i>
+			        <i class="fa fa-star fa-3x" data-rating="10"></i>
+			      </li>
+			  	</ul>
 			<% end %>
 			<div class="rated"></div>
 		</div>
