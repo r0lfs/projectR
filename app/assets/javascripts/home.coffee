@@ -3,16 +3,13 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 @set_stars = () ->
-	console.log('stars is running')
 	if $('#this_rating').val() > 0
 		$("#stars").find('li').each (index, element) =>
 			if $(element).find('i.fa-star').data('rating') <= $('#this_rating').val()
 				$(element).find('i.fa-star-o').hide()
 				$(element).find('i.fa-star').show()
-	else if $('#user_projected_rating').val() != null
-		console.log($("#user_projected_rating").val())
+	else if $('#user_projected_rating').val() != null && !isNaN( $('#user_projected_rating').val())
 		proj = Math.round($('#user_projected_rating').val())
-		console.log('proj is ' + proj)
 		$("#stars").find('li').each (index, element) =>
 			if $(element).find('i.fa-star').data('rating') <= proj
 				$(element).find('i.fa-star-o').hide()
@@ -38,8 +35,7 @@ $(document).on 'click', '.fa', ->
 			$(element).find('i.fa-star-half-o').hide()
 
 $(document).on 'turbolinks:load', ->
-	console.log('turbolinks loaded')
 	set_stars()
-$(document).on 'ajax:success', ->
-	console.log('next flim clicks')
+
+$(document).on 'ajax:success', '.button_to', ->
 	setTimeout(set_stars, 350)
