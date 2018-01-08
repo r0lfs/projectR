@@ -7,8 +7,9 @@
 		$("#stars").find('li').each (index, element) =>
 			if $(element).find('i.fa-star').data('rating') <= $('#this_rating').val()
 				$(element).find('i.fa-star-o').hide()
+				$(element).find('i.fa-star').css('color', 'yellow')
 				$(element).find('i.fa-star').show()
-	else if $('#user_projected_rating').val() != null && !isNaN( $('#user_projected_rating').val())
+	else if $('#user_projected_rating').val() != null
 		proj = Math.round($('#user_projected_rating').val())
 		$("#stars").find('li').each (index, element) =>
 			if $(element).find('i.fa-star').data('rating') <= proj
@@ -23,11 +24,13 @@ $(document).on 'click', '.fa', ->
 	$(this).hide()
 	$('#this_rating').val(value)
 	$('.wait_rate').show()
+	$(this).closest('li').find('i.fa-star').css('color', 'yellow')
 	$(this).closest('li').find('i.fa-star').show()
 	$(this).closest('li').siblings().each (index, element) =>
 		if $(element).find('i.fa-star-o').data('rating') < value
 			$(element).find('i.fa-star-o').hide()
 			$(element).find('i.fa-star-half-o').hide()
+			$(element).find('i.fa-star').css('color', 'yellow')
 			$(element).find('i.fa-star').show()
 		else
 			$(element).find('i.fa-star-o').show()
