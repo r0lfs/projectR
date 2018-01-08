@@ -2,6 +2,10 @@
 	<div class="home_search">
 		<%= render 'searched' %>
 	</div>
+<% elsif @nothing_left %>
+	<div class="col s8 offset-s2">
+		<h1><%= @nothing_left %></h1>
+	</div>
 <% else %>
 	<div class="col s4 offset-s3 home_base">
 		<%= render 'base_rate' %>
