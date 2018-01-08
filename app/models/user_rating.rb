@@ -111,7 +111,7 @@ class UserRating < ApplicationRecord
 	  genres = film['Genre'].split(',').map { |e| e.strip } #changes string of genres to an array so each genre can be searched individually 
 		user_rating = current_user.user_ratings.find_by(imdb_id: film['imdbID']) #if the user has already rated the film, it will show the rating 
 
-		if current_user.rate_count > 14 #runs once the user has rated 15 films to establish a baseline of tendencies 
+		if current_user.rate_count > 19 #runs once the user has rated 15 films to establish a baseline of tendencies 
 	  	projected = UserRating.projected_rating(current_user, ratings, genres) #runs the projected rating function
 	  else
 	  	projected = nil
@@ -207,7 +207,6 @@ class UserRating < ApplicationRecord
 	  "tt0266543",
 	  "tt0063522",
 	  "tt1125849",
-	  "tt6640262",
 	  "tt0060196",
 	  "tt0060196",
 	  "tt0043265",
