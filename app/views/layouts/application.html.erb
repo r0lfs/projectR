@@ -22,12 +22,14 @@
   	<nav>
   		<div class="nav-wrapper deep-purple darken-3 row">
       	<%= link_to "Project Rating", root_path, class: 'brand-logo' %>
-        	<div class="input-field search-input col s6 offset-s3">
+        <% if user_signed_in? %>
+         	<div class="input-field search-input col s6 offset-s3">
             <%= form_tag(root_path, method: 'get') do %>
             	<%= text_field_tag :search, params[:search], :id => 'search', type: 'search', placeholder: "Search by Title" %>
           	<% end %>
             <label for="search"><i class="material-icons left">search</i></label>
           </div>
+        <% end %>
        	<ul class="right hide-on-med-and-down">
         	<% if user_signed_in? %>
 		      	<li><a class="dropdown-button" href="#!" data-activates="dropdown1"><%= current_user.username %><i class="material-icons right">arrow_drop_down</i></a></li>
@@ -36,11 +38,11 @@
     	</div>
   	</nav>
 
-  	<p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
+  	
   	<div class="container">
   		<div class="row">
+        <p class="notice"><%= notice %></p>
+        <p class="alert"><%= alert %></p>
     		<%= yield %>
   		</div>
 		</div>

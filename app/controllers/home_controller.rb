@@ -6,16 +6,24 @@ class HomeController < ApplicationController
   		search
   	else
       rate_arrays = UserRating.set_rate(current_user)
-      base_film(rate_arrays[:already_rated], rate_arrays[:not_rated])
+      if rate_arrays[:not_rated].length == 0
+        @nothing_left = "You've rated all our base films! We're working on adding more to the database, but for now, please utilize the search function!"
+      else
+        base_film(rate_arrays[:already_rated], rate_arrays[:not_rated])
+      end
     end
   end
 
   def next_film
     already_rated = params[:already_rated]
     not_rated = params[:not_rated]
-    base_film(already_rated, not_rated)
-    respond_to do |format|
-      format.js
+    if not_rated.length == 0
+      @nothing_left = "You've rated all our base films! We're working on adding more to the database, but for now, please utilize the search function!"
+    else
+      base_film(already_rated, not_rated)
+      respond_to do |format|
+        format.js
+      end
     end
   end
 
