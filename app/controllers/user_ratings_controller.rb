@@ -7,21 +7,24 @@ class UserRatingsController < ApplicationController
   end
 
   def create
-    rating_params = UserRating.create_params(user_rating_params) #calls the create_params method which returns hash with UserRating values calculated
+    if !current_user.user_ratings.find_by(imdb_id: user_rating_params[:imdb_id]).nil?
+      update
+    else
+      rating_params = UserRating.create_params(user_rating_params) #calls the create_params method which returns hash with UserRating values calculated
 
-  	@user_rating = UserRating.new(rating_params)
-  	
-  	if @user_rating.save
-  		current_user.increment!(:rate_count)
-
-  		respond_to do |format|
-  			format.js
-  		end
-  	end
+    	@user_rating = UserRating.new(rating_params)
+    	
+    	if @user_rating.save
+    		current_user.increment!(:rate_count)
+    		respond_to do |format|
+    			format.js
+    		end
+    	end
+    end
   end
 
   def update
-    @user_rating = UserRating.find_by(:imdb_id)
+    @user_rating = current_user.user_ratings.find_by(imdb_id: user_rating_params[:imdb_id])
     rating_params = UserRating.create_params(user_rating_params)
     @user_rating.update(rating_params)
     respond_to do |format|

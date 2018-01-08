@@ -21,11 +21,13 @@
 			<% else %>
 				<p class="projected"> You need to rate at least <%= 20 - current_user.rate_count %> more films until we can project a rating</p>
 			<% end %>
+			<p id='created' class="saved">Your Rating Was Succesfully Saved!</p>
+			<p id='updated' class="saved">Your Rating Was Succesfully Updated!</p>
 			<div id="rating-form" data-turbolinks='false'>
 				<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
 			</div>
 
 			
 		</div> <br>
-		<%= button_to "I Haven't Seen This Film", next_film_path(already_rated: @already_rated, not_rated: @not_rated), class: 'next_film waves-effect waves-light btn deep-purple darken-3', method: :put, remote: true  %>
+		<%= button_to "Next Film", next_film_path(already_rated: @already_rated, not_rated: @not_rated), class: 'next_film waves-effect waves-light btn deep-purple darken-3', method: :put, remote: true  %>
 </div>
