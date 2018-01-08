@@ -1,5 +1,4 @@
 <div id="rating-form">
-	<p>fuck it!</p>
 	<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', html: {multipart: true}, remote: true do |f| %>
 		<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
 		<%= f.hidden_field :user_id, value: current_user.id %>
@@ -10,16 +9,33 @@
 		<% if projected.is_a?(Numeric) %>
 			<%= f.hidden_field :proj, value: projected %>
 		<% end %>
-		<%= f.select :rating,
-	  	options_for_select([
-	  		["5 Stars", 10],
-	  		["4 Stars", 8],
-	  		["3 Stars", 6],
-	  		["2 Stars", 4],
-	  		["1 Star", 2]
-	  	]) 
-	  %>
 
-		<%= f.submit %>
+    <ul id="stars">
+      <li id="star2">
+        <i class="fa fa-star-o fa-3x" data-rating="2"></i>
+        <i class="fa fa-star fa-3x" data-rating="2" ></i>
+      </li>
+      <li id="star4">
+        <i class="fa fa-star-o fa-3x" data-rating="4"></i>
+        <i class="fa fa-star fa-3x" data-rating="4" ></i>
+      </li>
+      <li id="star6">
+        <i class="fa fa-star-o fa-3x" data-rating="6"></i>
+        <i class="fa fa-star fa-3x" data-rating="6" ></i>
+      </li>
+      <li id="star8">
+        <i class="fa fa-star-o fa-3x" data-rating="8"></i>
+        <i class="fa fa-star fa-3x" data-rating="8" ></i>
+      </li>
+      <li id="star10">
+        <i class="fa fa-star-o fa-3x" data-rating="10"></i>
+        <i class="fa fa-star fa-3x" data-rating="10"></i>
+      </li>
+  	</ul>
+  	<%= f.hidden_field :rating, value: 0, id: 'this_rating' %>
+		<div class="wait_rate">
+			<%= f.submit :class => 'waves-effect waves-light btn deep-purple darken-3' %>
+		</div>
 	<% end %>
+
 </div>

@@ -1,3 +1,16 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+#stars{
+	li{
+		display: inline-block;
+	}
+	.fa-star{
+		display: none;
+		color: yellow;
+	}
+}
+
+.wait_rate{
+	display: none;
+}
