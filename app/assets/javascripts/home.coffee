@@ -11,11 +11,12 @@
 				$(element).find('i.fa-star').show()
 	else if $('#user_projected_rating').val() != null
 		proj = Math.round($('#user_projected_rating').val())
+		console.log("proj is #{proj}")
 		$("#stars").find('li').each (index, element) =>
 			if $(element).find('i.fa-star').data('rating') <= proj
 				$(element).find('i.fa-star-o').hide()
 				$(element).find('i.fa-star').show()	
-			if $(element).find('i.fa-star-half-o').data('rating') == proj
+			else if ($(element).find('i.fa-star-half-o').data('rating') - 1) == proj
 				$(element).find('i.fa-star-half-o').show()
 				$(element).find('i.fa-star-o').hide()
 
@@ -40,5 +41,5 @@ $(document).on 'click', '.fa', ->
 $(document).on 'turbolinks:load', ->
 	set_stars()
 
-$(document).on 'ajax:success', '.button_to', ->
+$(document).on 'ajax:complete', '.button_to', ->
 	setTimeout(set_stars, 350)
