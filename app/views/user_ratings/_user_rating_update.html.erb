@@ -1,5 +1,5 @@
-<div id="rating-form">
-	<%= form_with model: @user_rating, scope: :movie, url: 'user_ratings', html: {multipart: true}, remote: true do |f| %>
+<div id="update-form">
+	<%= form_with model: @user_rating, scope: :movie, html: {multipart: true}, remote: true do |f| %>
 		<%= f.hidden_field :imdb_id, value: result['imdbID'] %>
 		<%= f.hidden_field :user_id, value: current_user.id %>
 		<%= f.hidden_field :genres, value: result['Genre'] %>
@@ -9,8 +9,11 @@
 		<% if projected.is_a?(Numeric) %>
 			<%= f.hidden_field :proj, value: projected, id: 'user_projected_rating' %>
 		<% end %>
-
-  	<%= f.hidden_field :rating, value: 0, id: 'this_rating' %>
+    <% if !@user_rating.nil? %>
+      <%= f.hidden_field :rating, value: @user_rating.rating, id: 'this_rating' %>
+    <% else %>
+      <%= f.hidden_field :rating, value: nil, id: 'this_rating' %>
+    <% end %>
 
     <ul id="stars">
       <li id="star2">

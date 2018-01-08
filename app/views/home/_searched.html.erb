@@ -8,48 +8,25 @@
 			</ul>
 		</div>
 		<div class="fun">
-			<ul>
-				<li>imdb: <%= @ratings[:imdb] %></li>
-				<li>meta: <%= @ratings[:meta] %> </li>
-				<li>rt: <%= @ratings[:rt] %> </li>
-			</ul>
-				
 			<% if @user_rating.nil? %>
 				<% if @projected.is_a? Numeric %>
 					<p class='projected'>Projected Rating <%= (@projected/2).round(1) %>/5.0</p>
 				<% else %>
 					<p class="projected"><%= @projected %></p>
 				<% end %>
-
+				<p id='created' class="saved">Your Rating Was Succesfully Saved!</p>
+				<p id='updated' class="saved">Your Rating Was Succesfully updated!</p>
 				<div class="rating-form">
 					<%= render partial: 'user_ratings/user_rating_form', locals: {result: @result, ratings: @ratings, projected: @projected} %>
 				</div>
 			<% else %>
-				<p >Your Rating: <%= @user_rating.rating/2 %>/5</p>
-				  <ul id="stars">
-			      <li id="star2">
-			        <i class="fa fa-star-o fa-3x" data-rating="2"></i>
-			        <i class="fa fa-star fa-3x" data-rating="2" ></i>
-			      </li>
-			      <li id="star4">
-			        <i class="fa fa-star-o fa-3x" data-rating="4"></i>
-			        <i class="fa fa-star fa-3x" data-rating="4" ></i>
-			      </li>
-			      <li id="star6">
-			        <i class="fa fa-star-o fa-3x" data-rating="6"></i>
-			        <i class="fa fa-star fa-3x" data-rating="6" ></i>
-			      </li>
-			      <li id="star8">
-			        <i class="fa fa-star-o fa-3x" data-rating="8"></i>
-			        <i class="fa fa-star fa-3x" data-rating="8" ></i>
-			      </li>
-			      <li id="star10">
-			        <i class="fa fa-star-o fa-3x" data-rating="10"></i>
-			        <i class="fa fa-star fa-3x" data-rating="10"></i>
-			      </li>
-			  	</ul>
+				<p id='created' class="saved">Your Rating Was Succesfully Saved!</p>
+				<p id='updated' class="saved">Your Rating Was Succesfully updated!</p>
+				<div class="user_rated">
+					<p>Your Rating:</p>
+					<%= render partial: 'user_ratings/user_rating_update', locals: {result: @result, ratings: @ratings, projected: @projected} %>
+				</div>
 			<% end %>
-			<div class="rated"></div>
 		</div>
 	<% else %>
 	<div class="not-found">
